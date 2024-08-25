@@ -2,26 +2,32 @@ mod cards;
 use std::io;
 
 fn main() {
-    println!("Welcome to Blackjack game!");
-    let deck = cards::generate_deck();
+    println!("Welcome to Blackjack game!, your goal is it hit 21!");
+    let mut deck = cards::generate_deck();
     //list_deck(&deck);
-    println!("Your goal is it hit 21!");
-
     let mut score: i32 = 0;
+
+    //init game with 2 random cards face up
+    for _ in 0..2 {
+        let card = cards::get_random_card_from_deck(&mut deck);
+        let card_value = cards::get_card_value(&card);
+        println!("{} of {}, value: {}", card.rank, card.suit, card_value);
+        score += card_value;
+    }
+
     loop {
-        let card = cards::get_random_card_from_deck(&deck);
-        let card_value = cards::get_card_value(card);
+        println!("Hit(h) or stand(s) | current value: {score}");
+        let next_card: bool = next_card();
+        if next_card == false {
+            break;
+        }
+
+        let card = cards::get_random_card_from_deck(&mut deck);
+        let card_value = cards::get_card_value(&card);
         println!("{} of {}, value: {}", card.rank, card.suit, card_value);
         score += card_value;
         if score > 21 {
             println!("You lost! You reached {score}");
-            break;
-        }
-
-        println!("Hit(h) or stand(s) | current value: {score}");
-        let next_card: bool = next_card();
-        println!("{}", next_card);
-        if next_card == false {
             break;
         }
     }
@@ -36,7 +42,6 @@ fn next_card() -> bool {
         .expect("Failed to read line");
 
     if buffer.trim() == "h" {
-        println!("returning true");
         return true;
     }
 

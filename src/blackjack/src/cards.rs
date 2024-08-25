@@ -74,9 +74,15 @@ pub fn get_card_value(card: &Card) -> i32 {
     }
 }
 
-pub fn get_random_card_from_deck(deck: &Vec<Card>) -> &Card {
+pub fn get_random_card_from_deck(deck: &mut Vec<Card>) -> Card {
     let mut rng = rand::thread_rng();
-    let random_number = rng.gen_range(0..52);
-    let card: &Card = &deck[random_number];
-    card
+    let random_index = rng.gen_range(0..deck.len());
+
+    //remove from deck as card is used
+    let removed_from_deck = &deck.remove(random_index);
+    let played_card = Card {
+        rank: removed_from_deck.rank.clone(),
+        suit: removed_from_deck.suit,
+    };
+    played_card
 }
