@@ -3,7 +3,7 @@ use std::io;
 
 pub fn play() {
     let mut player: i32 = 0;
-    let mut dealer = 0;
+    let mut dealer: i32 = 0;
 
     let mut deck = cards::generate_deck();
     let card = cards::get_random_card_from_deck(&mut deck);
@@ -20,7 +20,7 @@ pub fn play() {
         player += card_value;
     }
 
-    if (player == 21) {
+    if player == 21 {
         println!("Player wins, blackjack!");
         return;
     }
